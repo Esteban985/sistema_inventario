@@ -1,4 +1,3 @@
-import { pool } from "../config/database.js"
 import { actualizarProducto, crearProductoQuery, eliminarProductoID, traerProductoEspecifico, traerProductos } from "../respositories/productosRepository.js"
 
 const getProductos = async (req, res) => {
@@ -18,7 +17,7 @@ const getProductoID = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
-    const productoCreado = await crearProductoQuery(req.body)
+    await crearProductoQuery(req.body)
 
     res.status(201).json({
         message: 'Producto creado correctamente'

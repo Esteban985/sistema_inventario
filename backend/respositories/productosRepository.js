@@ -21,14 +21,6 @@ const traerProductoEspecifico = async (id) => {
 }
 
 const crearProductoQuery = async (producto) => {
-    const result = await pool.query(`select codigo from productos`)
-
-    const codigosExistentes = result.rows.map(item => item.codigo)
-
-    if (codigosExistentes.includes(producto.codigo)) {
-        throw new Error('El codigo ingresado ya existe por favor cambialo')
-    }
-
     try {
         const result = await pool.query(`insert into productos (codigo, nombre, descripcion, categoria, marca, precio, stock) values ('${producto.codigo}','${producto.nombre}', '${producto.descripcion}','${producto.categoria}','${producto.marca}',${producto.precio},${producto.stock})`)
 
