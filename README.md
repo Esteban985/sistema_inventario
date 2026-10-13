@@ -82,3 +82,6 @@ Desarrollo de una aplicación web para poder administrar los productos de una pq
 3. Metodo > `POST` > Para poder crear un nuevo registro > http://localhost:`Puerto que ingreso previamente`/api/productos
 4. Metodo > `PUT` > Para poder actualizar un producto > http://localhost:`Puerto que ingreso previamente`/api/productos/`ID del producto`/producto
 5. Metodo > `DELETE` > Para poder borrar un registro > http://localhost:`Puerto que ingreso previamente`/api/productos/`ID del producto`/producto
+
+# Vista del Frontend
+<Img src="./Docs/frontend.png">
