@@ -9,7 +9,7 @@ export const validarNuevoSchema = z.object({
     nombre: z
         .string()
         .trim()
-        .min(3, 'Por favor ingrese el nombre del producto')
+        .min(3, 'Por favor ingrese el nombre del producto, minimo 3 digitos.')
         .max(100, 'El maximo para un nombre es de 100 caracteres'),
     descripcion: z
         .string()
@@ -25,19 +25,15 @@ export const validarNuevoSchema = z.object({
         .min(1, 'Por favor ingrese la marca')
         .max(50, 'El maximo es de 50 caracteres'),
     precio: z
-        .string(),
-    precio:
-        z
-            .coerce
-            .number()
-            .positive('El numero no puede ser 0')
-            .nonnegative('El numero no puede ser negativo'),
-    stock:
-        z
-            .coerce
-            .number()
-            .nonnegative('El numero no puede ser negativo'),
+        .coerce
+        .number()
+        .positive('El numero no puede ser 0')
+        .nonnegative('El numero no puede ser negativo'),
+    stock: z
+        .coerce
+        .number()
+        .nonnegative('El numero no puede ser negativo'),
     estado: z
         .coerce
-        .boolean()
+        .boolean('Solo se recibe Activo o Inactivo.')
 })

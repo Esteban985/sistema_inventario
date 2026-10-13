@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { apiClient } from "../api/api";
+import { sileo } from 'sileo'
 
 const contextSistema = createContext();
 
@@ -14,19 +15,12 @@ const SistemaProvider = ({ children }) => {
         stock: 0,
         estado: true,
     })
-    // let initialFormState = {
-    //     codigo: '',
-    //     nombre: '',
-    //     descripcion: '',
-    //     categoria: '',
-    //     marca: '',
-    //     precio: 0,
-    //     stock: 0
-    // }
 
     const [productos, setProductos] = useState([])
     const [openModal, setOpenModal] = useState(false)
     const [editando, setEditando] = useState(null)
+    const [eliminar, setEliminar] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const onCancel = () => {
         setOpenModal(false)
@@ -40,6 +34,7 @@ const SistemaProvider = ({ children }) => {
             stock: 0,
             estado: true
         })
+        setEditando(null)
     }
 
     const onOpenModal = () => {
@@ -47,32 +42,59 @@ const SistemaProvider = ({ children }) => {
     }
 
     const crearNuevoProducto = async (form) => {
-        console.log(form)
         try {
-            await apiClient.post('/productos', form)
+            const result = await apiClient.post('/productos', form)
 
             await traerProductos()
 
             onCancel()
+
+            sileo.success({
+                title: result.data.message
+            })
         } catch (error) {
-            console.log(error.message)
+            sileo.error({
+                title: "Error de codigo",
+                description: error.response.data.message,
+            });
         }
     }
 
     const eliminarProducto = async (id) => {
         try {
-            await apiClient.delete(`productos/${id}/producto`)
+            const result = await apiClient.delete(`productos/${id}/producto`)
 
             await traerProductos()
+
+            sileo.success({
+                title: result.data.message
+            })
+
+            setEliminar(null)
         } catch (error) {
-            console.log(error.message)
+            sileo.error({
+                title: 'Error',
+                description: error.response.data.message
+            })
         }
     }
 
     const traerProductos = async () => {
-        const { data } = await apiClient.get('/productos')
+        try {
+            setLoading(true)
 
-        setProductos(data.data)
+            const { data } = await apiClient.get('/productos')
+
+            setProductos(data.data)
+        } catch (error) {
+            sileo.error({
+                title: 'Error Inesperado',
+                description: error.response.data.message
+            })
+        } finally {
+            setLoading(false)
+        }
+
     }
 
     const llenarFormulario = async (id) => {
@@ -87,7 +109,7 @@ const SistemaProvider = ({ children }) => {
                 marca: datos.marca,
                 precio: datos.precio,
                 stock: datos.stock,
-                estado: datos.estado,
+                estado: datos.estado ? true : '',
             }
 
             setInitialFormState(formularioDatos)
@@ -96,23 +118,29 @@ const SistemaProvider = ({ children }) => {
 
             setEditando(datos.producto_id)
         } catch (error) {
-            console.log(error.message)
+            sileo.error({
+                title: 'Error Inesperado',
+                description: error.response.data.message
+            })
         }
     }
 
     const editarProducto = async (id, form) => {
-        console.log(form)
         try {
             const result = await apiClient.put(`/productos/${id}/producto`, form)
 
-            console.log(result.data.message)
             setEditando(null)
 
             traerProductos()
 
             onCancel()
+
+            sileo.success({ title: result.data.message })
         } catch (error) {
-            console.log(error.response.data.message)
+            sileo.error({
+                title: 'Error Inesperado',
+                description: error.response.data.message
+            })
         }
 
     }
@@ -131,7 +159,10 @@ const SistemaProvider = ({ children }) => {
             llenarFormulario,
             editando,
             setEditando,
-            editarProducto
+            editarProducto,
+            eliminar,
+            setEliminar,
+            loading
         }}>
             {children}
         </contextSistema.Provider>

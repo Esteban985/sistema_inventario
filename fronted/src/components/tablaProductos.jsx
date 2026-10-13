@@ -6,17 +6,9 @@ import { contextSistema } from "../context/contextSistema"
 const TablaProductos = () => {
     const {
         productos,
-        setProductos,
-        eliminarProducto,
-        onOpenModal,
-        traerProductos,
-        llenarFormulario
+        llenarFormulario,
+        setEliminar
     } = useContext(contextSistema)
-
-
-    useEffect(() => {
-        traerProductos()
-    }, [])
 
     return (
         <>
@@ -25,6 +17,7 @@ const TablaProductos = () => {
                     <tr>
                         <th>Código del producto</th>
                         <th>Nombre</th>
+                        <th>Descripcion</th>
                         <th>Categoría</th>
                         <th>Precio</th>
                         <th>Stock</th>
@@ -33,16 +26,21 @@ const TablaProductos = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {productos?.map(item => (
+                    {productos.map(item => (
                         <tr key={item.producto_id}>
                             <th>{item.codigo}</th>
                             <th>{item.nombre}</th>
+                            <th>{item.descripcion}</th>
                             <th>{item.categoria}</th>
                             <th>{item.precio}</th>
                             <th>{item.stock}</th>
-                            <th>{item.estado ? 'Activo' : 'Inactivo'}</th>
+                            <th>
+                                <div className={`badge ${item.estado ? 'bg-success' : 'bg-danger'}`}>
+                                    {item.estado ? 'Activo' : 'Inactivo'}
+                                </div>
+                            </th>
                             <th>{<BotonesAcciones
-                                onEliminar={() => eliminarProducto(item.producto_id)}
+                                onEliminar={() => setEliminar(item.producto_id)}
                                 onEditar={() => { llenarFormulario(item.producto_id) }}
                             />}</th>
                         </tr>

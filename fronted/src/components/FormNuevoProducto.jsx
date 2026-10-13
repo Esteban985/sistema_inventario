@@ -30,7 +30,7 @@ const FormNuevoProducto = () => {
             await editarProducto(editando, data)
         }
     }
-    
+
 
     return (
         <>
@@ -192,36 +192,38 @@ const FormNuevoProducto = () => {
                     )}
                 />
 
-                <Controller
-                    name='estado'
-                    control={control}
-                    render={({ field }) => (
-                        <>
-                            <label htmlFor="estado">Seleccione el estado del producto</label>
+                {editando != null && (
+                    <Controller
+                        name='estado'
+                        control={control}
+                        render={({ field }) => (
+                            <>
+                                <label htmlFor="estado">Seleccione el estado del producto</label>
 
-                            <select
-                                name="estado"
-                                id="estado"
-                                className={`form-select ${errors.estado ? 'is-invalid' : ''}`}
-                                {...field}
-                                onChange={(event) => {
-                                    const valorSeleccionado = event.target.value
-                                    console.log(valorSeleccionado)
-                                    field.onChange(valorSeleccionado)
-                                }}
-                            >
-                                <option value="true">Activo</option>
-                                <option value="">Inactivo</option>
-                            </select>
+                                <select
+                                    name="estado"
+                                    id="estado"
+                                    className={`form-select ${errors.estado ? 'is-invalid' : ''}`}
+                                    {...field}
+                                    onChange={(event) => {
+                                        const valorSeleccionado = event.target.value
 
-                            {errors.estado && (
-                                <div className='invalid-feedback'>
-                                    {errors.estado.message}
-                                </div>
-                            )}
-                        </>
-                    )}
-                />
+                                        field.onChange(valorSeleccionado)
+                                    }}
+                                >
+                                    <option value="true">Activo</option>
+                                    <option value="">Inactivo</option>
+                                </select>
+
+                                {errors.estado && (
+                                    <div className='invalid-feedback'>
+                                        {errors.estado.message}
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    />
+                )}
 
                 <div className='d-flex justify-content-around mt-2'>
                     <button
