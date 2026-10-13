@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { apiClient } from "../api/api"
 import { BotonesAcciones } from "./BotonesAcciones"
+import { contextSistema } from "../context/contextSistema"
 
 const TablaProductos = () => {
-    const [productos, setProductos] = useState([])
+    const {
+        productos,
+        setProductos,
+        eliminarProducto,
+        onOpenModal,
+        traerProductos,
+        llenarFormulario
+    } = useContext(contextSistema)
 
-    const traerProductos = async () => {
-        const { data } = await apiClient.get('/')
 
-        setProductos(data.data)
-    }
     useEffect(() => {
         traerProductos()
     }, [])
@@ -37,7 +41,10 @@ const TablaProductos = () => {
                             <th>{item.precio}</th>
                             <th>{item.stock}</th>
                             <th>{item.estado ? 'Activo' : 'Inactivo'}</th>
-                            <th>{<BotonesAcciones />}</th>
+                            <th>{<BotonesAcciones
+                                onEliminar={() => eliminarProducto(item.producto_id)}
+                                onEditar={() => { llenarFormulario(item.producto_id) }}
+                            />}</th>
                         </tr>
                     ))}
                 </tbody>

@@ -9,7 +9,7 @@ export const validarNuevoSchema = z.object({
     nombre: z
         .string()
         .trim()
-        .min(1, 'Por favor ingrese el nombre del producto')
+        .min(3, 'Por favor ingrese el nombre del producto')
         .max(100, 'El maximo para un nombre es de 100 caracteres'),
     descripcion: z
         .string()
@@ -30,10 +30,14 @@ export const validarNuevoSchema = z.object({
         z
             .coerce
             .number()
+            .positive('El numero no puede ser 0')
             .nonnegative('El numero no puede ser negativo'),
     stock:
         z
             .coerce
             .number()
-            .nonnegative('El numero no puede ser negativo')
+            .nonnegative('El numero no puede ser negativo'),
+    estado: z
+        .coerce
+        .boolean()
 })

@@ -5,7 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { validarNuevoSchema } from '../schemas/crearNuevoProductoSchema'
 
 const FormNuevoProducto = () => {
-    const { initialFormState } = useContext(contextSistema)
+    const {
+        initialFormState,
+        onCancel,
+        crearNuevoProducto,
+        editando,
+        editarProducto
+    } = useContext(contextSistema)
 
     const {
         handleSubmit,
@@ -17,15 +23,18 @@ const FormNuevoProducto = () => {
         resolver: zodResolver(validarNuevoSchema)
     })
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const onSubmit = async (data) => {
+        if (editando == null) {
+            await crearNuevoProducto(data)
+        } else {
+            await editarProducto(editando, data)
+        }
     }
 
     return (
         <>
-            <h1>Ingrese los datos correspondientes para crear un nuevo producto</h1>
             <form
-                className='form-control'
+                className='form-control d-flex flex-column'
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <Controller
@@ -181,7 +190,48 @@ const FormNuevoProducto = () => {
                         </>
                     )}
                 />
-                <button type='submit'>probar</button>
+
+                <Controller
+                    name='estado'
+                    control={control}
+                    render={({ field }) => (
+                        <>
+                            <label htmlFor="estado">Seleccione el estado del producto</label>
+
+                            <select
+                                name="estado"
+                                id="estado"
+                                className={`form-select ${errors.estado ? 'is-invalid' : ''}`}
+                                {...field}
+                                onChange={(event) => {
+                                    const valorSeleccionado = event.target.value
+                                    console.log(valorSeleccionado)
+                                    field.onChange(valorSeleccionado)
+                                }}
+                            >
+                                <option value="true">Activo</option>
+                                <option value="">Inactivo</option>
+                            </select>
+
+                            {errors.estado && (
+                                <div className='invalid-feedback'>
+                                    {errors.estado.message}
+                                </div>
+                            )}
+                        </>
+                    )}
+                />
+
+                <div className='d-flex justify-content-around mt-2'>
+                    <button
+                        type='submit'
+                        className='btn btn-info'
+                    >Enviar Datos</button>
+                    <button
+                        className='btn btn-danger'
+                        onClick={onCancel}
+                    >Cancelar</button>
+                </div>
             </form>
         </>
     );

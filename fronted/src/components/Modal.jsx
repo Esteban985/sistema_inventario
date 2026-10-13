@@ -1,25 +1,23 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-const ModalCustom = ({ show, onHide, children, title }) => {
+const ModalCustom = ({ show, onCancel, children, title }) => {
     return (
         <Modal
-            show={true}
-            onHide={true}
-            size="sm"
+            show={show}
+            onHide={onCancel}
+            size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
                     {title}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {children}
             </Modal.Body>
-            <Modal.Footer>
-                <Button>Close</Button>
-            </Modal.Footer>
         </Modal>
     )
 }
