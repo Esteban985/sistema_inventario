@@ -26,7 +26,12 @@ const crearProductoQuery = async (producto) => {
 
         return result.rows
     } catch (error) {
-        throw new Error('Error al crear un nuevo producto')
+        if (error.code == 23505) {
+            throw new Error('Codigo duplicado por favor cambielo')
+        } else {
+            throw new Error('Error al crear un nuevo producto')
+        }
+        // console.log(error.code == 23505)
     }
 }
 
