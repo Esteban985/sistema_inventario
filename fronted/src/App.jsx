@@ -8,7 +8,8 @@ import { ModalCustom } from "./components/Modal"
 function App() {
   const {
     openModal,
-    setOpenModal
+    onOpenModal,
+    onCancel
   } = useContext(contextSistema)
 
   return (
@@ -17,7 +18,10 @@ function App() {
 
       <div className="container mt-4 d-flex justify-content-between">
         <h2>Catalogo de productos disponibles</h2>
-        <button className="btn btn-primary">Crear nuevo producto</button>
+        <button
+          onClick={onOpenModal}
+          className="btn btn-primary"
+        >Crear nuevo producto</button>
       </div>
 
       <div className="container mt-5">
@@ -25,8 +29,12 @@ function App() {
       </div>
 
       {openModal &&
-        <ModalCustom title={'Por favor ingrese los datos'}>
-          
+        <ModalCustom
+          title={'Por favor ingrese los datos'}
+          show={openModal}
+          onHide={openModal}
+          onCancel={onCancel}>
+          <FormNuevoProducto btnText={'Enviar datos'} />
         </ModalCustom>}
 
     </>

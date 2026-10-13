@@ -3,8 +3,11 @@ import { verificarMetodoRuta } from './middlewares/loggerMiddleware.js';
 import { pool } from './config/database.js';
 import { productosRouter } from './routes/productosRoute.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import cors from 'cors'
 
 const app = express();
+
+app.use(cors())
 
 app.use(express.json())
 
