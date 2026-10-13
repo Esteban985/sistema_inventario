@@ -1,4 +1,4 @@
-import { string, z } from 'zod'
+import { z } from 'zod'
 
 const createProductValidate = z.object({
     codigo:
@@ -22,6 +22,7 @@ const createProductValidate = z.object({
         z.string('Este campo permite unicamente strings si no desea mandar nada mande vacio'),
     precio:
         z.number()
+            .positive('El numero no puede ser igual a 0')
             .nonnegative('El numero no puede ser negativo'),
     stock:
         z.int('Si desea enviar stock vacio mande 0'),

@@ -26,7 +26,7 @@ const crearProductoQuery = async (producto) => {
 
         return result.rows
     } catch (error) {
-        throw new Error('Error al intentar crear el producto')
+        throw new Error('Error al crear un nuevo producto')
     }
 }
 
