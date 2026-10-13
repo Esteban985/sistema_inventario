@@ -26,6 +26,8 @@ const createProductValidate = z.object({
             .nonnegative('El numero no puede ser negativo'),
     stock:
         z.int('Si desea enviar stock vacio mande 0'),
+    estado: z
+        .boolean()
 })
 
 export { createProductValidate }

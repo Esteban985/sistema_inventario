@@ -22,7 +22,7 @@ const traerProductoEspecifico = async (id) => {
 
 const crearProductoQuery = async (producto) => {
     try {
-        const result = await pool.query(`insert into productos (codigo, nombre, descripcion, categoria, marca, precio, stock) values ('${producto.codigo}','${producto.nombre}', '${producto.descripcion}','${producto.categoria}','${producto.marca}',${producto.precio},${producto.stock})`)
+        const result = await pool.query(`insert into productos (codigo, nombre, descripcion, categoria, marca, precio, stock, estado) values ('${producto.codigo}','${producto.nombre}', '${producto.descripcion}','${producto.categoria}','${producto.marca}',${producto.precio},${producto.stock},${producto.estado ? true : false})`)
 
         return result.rows
     } catch (error) {
@@ -31,7 +31,6 @@ const crearProductoQuery = async (producto) => {
         } else {
             throw new Error('Error al crear un nuevo producto')
         }
-        // console.log(error.code == 23505)
     }
 }
 
